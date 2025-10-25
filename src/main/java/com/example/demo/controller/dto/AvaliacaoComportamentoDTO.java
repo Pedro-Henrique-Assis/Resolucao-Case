@@ -1,9 +1,9 @@
 package com.example.demo.controller.dto;
 
 public record AvaliacaoComportamentoDTO(
-        byte notaAvaliacaoComportamental,
-        byte notaAprendizado,
-        byte notaTomadaDecisao,
-        byte notaAutonomia,
+        Byte notaAvaliacaoComportamental,
+        Byte notaAprendizado,
+        Byte notaTomadaDecisao,
+        Byte notaAutonomia,
         double mediaNotas) {
 }

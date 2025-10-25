@@ -45,36 +45,6 @@ public class ColaboradorService {
                 .map(this::formatarJsonDTO);
     }
 
-    private ColaboradorRespostaDTO formatarJsonDTO(Colaborador colaborador) {
-        AvaliacaoComportamentoDTO notas = null;
-        AvaliacaoComportamento avaliacao = colaborador.getAvaliacaoComportamento();
-
-        if (avaliacao != null) {
-            int soma = avaliacao.getNotaAvaliacaoComportamental() +
-                    avaliacao.getNotaAprendizado() +
-                    avaliacao.getNotaTomadaDecisao() +
-                    avaliacao.getNotaAutonomia();
-
-            float media = soma / 4.0f;
-
-            notas = new AvaliacaoComportamentoDTO(
-                    avaliacao.getNotaAvaliacaoComportamental(),
-                    avaliacao.getNotaAprendizado(),
-                    avaliacao.getNotaTomadaDecisao(),
-                    avaliacao.getNotaAutonomia(),
-                    media
-            );
-        }
-
-        return new ColaboradorRespostaDTO(
-                colaborador.getMatricula(),
-                colaborador.getNome(),
-                colaborador.getDataAdmissao(),
-                colaborador.getCargo(),
-                notas
-        );
-    }
-
     public List<ColaboradorRespostaDTO> listarColaboradores() {
         return colaboradorRepository.findAll().stream().map(this::formatarJsonDTO).collect(Collectors.toList());
     }
@@ -108,5 +78,35 @@ public class ColaboradorService {
             // Realiza a operação de update daquele colaborador específico
             colaboradorRepository.save(colaborador);
         }
+    }
+
+    private ColaboradorRespostaDTO formatarJsonDTO(Colaborador colaborador) {
+        AvaliacaoComportamentoDTO notas = null;
+        AvaliacaoComportamento avaliacao = colaborador.getAvaliacaoComportamento();
+
+        if (avaliacao != null) {
+            int soma = avaliacao.getNotaAvaliacaoComportamental() +
+                    avaliacao.getNotaAprendizado() +
+                    avaliacao.getNotaTomadaDecisao() +
+                    avaliacao.getNotaAutonomia();
+
+            float media = soma / 4.0f;
+
+            notas = new AvaliacaoComportamentoDTO(
+                    avaliacao.getNotaAvaliacaoComportamental(),
+                    avaliacao.getNotaAprendizado(),
+                    avaliacao.getNotaTomadaDecisao(),
+                    avaliacao.getNotaAutonomia(),
+                    media
+            );
+        }
+
+        return new ColaboradorRespostaDTO(
+                colaborador.getMatricula(),
+                colaborador.getNome(),
+                colaborador.getDataAdmissao(),
+                colaborador.getCargo(),
+                notas
+        );
     }
 }

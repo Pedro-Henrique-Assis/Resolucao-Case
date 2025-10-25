@@ -14,19 +14,19 @@ public class AvaliacaoComportamento {
 
     @Column(name = "nota_ambiente_colaborativo")
     @Min(1) @Max(5)
-    private byte notaAvaliacaoComportamental;
+    private Byte notaAvaliacaoComportamental;
 
     @Column(name = "nota_aprendizado")
     @Min(1) @Max(5)
-    private byte notaAprendizado;
+    private Byte notaAprendizado;
 
     @Column(name = "nota_tomada_decisao")
     @Min(1) @Max(5)
-    private byte notaTomadaDecisao;
+    private Byte notaTomadaDecisao;
 
     @Column(name = "nota_autonomia")
     @Min(1) @Max(5)
-    private byte notaAutonomia;
+    private Byte notaAutonomia;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "matricula", referencedColumnName = "matricula", nullable = false)
@@ -35,7 +35,7 @@ public class AvaliacaoComportamento {
     public AvaliacaoComportamento() {
     }
 
-    public AvaliacaoComportamento(Long id, byte notaAvaliacaoComportamental, byte notaAprendizado, byte notaTomadaDecisao, byte notaAutonomia) {
+    public AvaliacaoComportamento(Long id, Byte notaAvaliacaoComportamental, Byte notaAprendizado, Byte notaTomadaDecisao, Byte notaAutonomia) {
         this.id = id;
         this.notaAvaliacaoComportamental = notaAvaliacaoComportamental;
         this.notaAprendizado = notaAprendizado;
@@ -51,35 +51,35 @@ public class AvaliacaoComportamento {
         this.id = id;
     }
 
-    public byte getNotaAvaliacaoComportamental() {
+    public Byte getNotaAvaliacaoComportamental() {
         return notaAvaliacaoComportamental;
     }
 
-    public void setNotaAvaliacaoComportamental(byte notaAvaliacaoComportamental) {
+    public void setNotaAvaliacaoComportamental(Byte notaAvaliacaoComportamental) {
         this.notaAvaliacaoComportamental = notaAvaliacaoComportamental;
     }
 
-    public byte getNotaAprendizado() {
+    public Byte getNotaAprendizado() {
         return notaAprendizado;
     }
 
-    public void setNotaAprendizado(byte notaAprendizado) {
+    public void setNotaAprendizado(Byte notaAprendizado) {
         this.notaAprendizado = notaAprendizado;
     }
 
-    public byte getNotaTomadaDecisao() {
+    public Byte getNotaTomadaDecisao() {
         return notaTomadaDecisao;
     }
 
-    public void setNotaTomadaDecisao(byte notaTomadaDecisao) {
+    public void setNotaTomadaDecisao(Byte notaTomadaDecisao) {
         this.notaTomadaDecisao = notaTomadaDecisao;
     }
 
-    public byte getNotaAutonomia() {
+    public Byte getNotaAutonomia() {
         return notaAutonomia;
     }
 
-    public void setNotaAutonomia(byte notaAutonomia) {
+    public void setNotaAutonomia(Byte notaAutonomia) {
         this.notaAutonomia = notaAutonomia;
     }
 

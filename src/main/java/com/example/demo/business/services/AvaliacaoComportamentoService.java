@@ -53,7 +53,7 @@ public class AvaliacaoComportamentoService {
     }
 
     public Optional<AvaliacaoComportamentoRespostaDTO> consultaAvaliacaoPorMatricula(String matricula) {
-        Optional<Colaborador> colaboradorOpcional = colaboradorRepository.findById(UUID.fromString(matricula));
+        var colaboradorOpcional = colaboradorRepository.findById(UUID.fromString(matricula));
 
         return colaboradorOpcional
                 .map(Colaborador::getAvaliacaoComportamento)
@@ -73,24 +73,33 @@ public class AvaliacaoComportamentoService {
 
             var notas = colaborador.getAvaliacaoComportamento();
 
-            if (notas != null) {
+            if (novasNotas.notaAvaliacaoComportamental() != null) {
                 notas.setNotaAvaliacaoComportamental(novasNotas.notaAvaliacaoComportamental());
-                notas.setNotaAprendizado(novasNotas.notaAprendizado());
-                notas.setNotaTomadaDecisao(novasNotas.notaTomadaDecisao());
-                notas.setNotaAutonomia(novasNotas.notaAutonomia());
-
-                avaliacaoComportamentoRepository.save(notas);
             }
+
+            if (novasNotas.notaAprendizado() != null) {
+                notas.setNotaAprendizado(novasNotas.notaAprendizado());
+            }
+
+            if (novasNotas.notaTomadaDecisao() != null) {
+                notas.setNotaTomadaDecisao(novasNotas.notaTomadaDecisao());
+            }
+
+            if (novasNotas.notaAutonomia() != null) {
+                notas.setNotaAutonomia(novasNotas.notaAutonomia());
+            }
+
+            avaliacaoComportamentoRepository.save(notas);
         }
 
     }
 
     private AvaliacaoComportamentoRespostaDTO formataRespostaDTO(AvaliacaoComportamento avaliacao) {
 
-        byte notaAvaliacaoComportamental = avaliacao.getNotaAvaliacaoComportamental();
-        byte notaAprendizado = avaliacao.getNotaAprendizado();
-        byte notaTomadaDecisao = avaliacao.getNotaTomadaDecisao();
-        byte notaAutonomia = avaliacao.getNotaAutonomia();
+        Byte notaAvaliacaoComportamental = avaliacao.getNotaAvaliacaoComportamental();
+        Byte notaAprendizado = avaliacao.getNotaAprendizado();
+        Byte notaTomadaDecisao = avaliacao.getNotaTomadaDecisao();
+        Byte notaAutonomia = avaliacao.getNotaAutonomia();
         int soma = notaAvaliacaoComportamental + notaAprendizado + notaTomadaDecisao + notaAutonomia;
         float media = soma / 4.0f;
 
