@@ -15,9 +15,9 @@ import java.util.UUID;
 @Service
 public class AvaliacaoComportamentoService {
 
-    private AvaliacaoComportamentoRepository avaliacaoComportamentoRepository;
+    private final AvaliacaoComportamentoRepository avaliacaoComportamentoRepository;
 
-    private ColaboradorRepository colaboradorRepository;
+    private final ColaboradorRepository colaboradorRepository;
 
     public AvaliacaoComportamentoService(
             AvaliacaoComportamentoRepository avaliacaoComportamentoRepository,

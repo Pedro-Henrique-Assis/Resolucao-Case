@@ -1,25 +1,21 @@
 package com.example.demo.controller;
 
 import com.example.demo.business.services.AvaliacaoComportamentoService;
-import com.example.demo.business.services.ColaboradorService;
 import com.example.demo.controller.dto.AtualizaAvaliacaoComportamentoDTO;
-import com.example.demo.controller.dto.AtualizaColaboradorDTO;
 import com.example.demo.controller.dto.AvaliacaoComportamentoDTO;
 import com.example.demo.controller.dto.AvaliacaoComportamentoRespostaDTO;
 import com.example.demo.infrastructure.model.AvaliacaoComportamento;
-import com.example.demo.infrastructure.repository.ColaboradorRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/colaborador/{matricula}/avaliacao")
 public class AvaliacaoComportamentoController {
 
-    private AvaliacaoComportamentoService avaliacaoComportamentoService;
+    private final AvaliacaoComportamentoService avaliacaoComportamentoService;
 
     public AvaliacaoComportamentoController(AvaliacaoComportamentoService avaliacaoComportamentoService) {
         this.avaliacaoComportamentoService = avaliacaoComportamentoService;

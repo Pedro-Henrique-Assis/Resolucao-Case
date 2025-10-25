@@ -7,19 +7,17 @@ import com.example.demo.controller.dto.ColaboradorRespostaDTO;
 import com.example.demo.infrastructure.model.AvaliacaoComportamento;
 import com.example.demo.infrastructure.model.Colaborador;
 import com.example.demo.infrastructure.repository.ColaboradorRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
 public class ColaboradorService {
 
-    private ColaboradorRepository colaboradorRepository;
+    private final ColaboradorRepository colaboradorRepository;
 
     //Injeção de dependência da classe ColaboradorRepository
     public ColaboradorService(ColaboradorRepository colaboradorRepository) {

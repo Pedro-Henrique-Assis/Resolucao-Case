@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/colaborador")
 public class ColaboradorController {
 
-    private ColaboradorService colaboradorService;
+    private final ColaboradorService colaboradorService;
 
     // Injeção de dependência de ColaboradorService
     public ColaboradorController(ColaboradorService colaboradorService) {
