@@ -4,6 +4,7 @@ import com.example.demo.business.services.ColaboradorService;
 import com.example.demo.controller.dto.AtualizaColaboradorDTO;
 import com.example.demo.controller.dto.ColaboradorDTO;
 import com.example.demo.controller.dto.ColaboradorRespostaDTO;
+import com.example.demo.controller.dto.PerformanceDTO;
 import com.example.demo.infrastructure.model.Colaborador;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,13 @@ public class ColaboradorController {
         var colaboradores = colaboradorService.listarColaboradores();
 
         return ResponseEntity.ok(colaboradores);
+    }
+
+    @GetMapping("/{matricula}/performance")
+    public ResponseEntity<PerformanceDTO> calcularPerformanceFinal(@PathVariable("matricula") String matricula) {
+        PerformanceDTO resultado = colaboradorService.calcularPerformanceFinal(matricula);
+
+        return ResponseEntity.ok(resultado);
     }
 
     @DeleteMapping("/{matricula}")

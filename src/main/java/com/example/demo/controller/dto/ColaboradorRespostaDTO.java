@@ -1,6 +1,7 @@
 package com.example.demo.controller.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 // Utilizado para formatar o JSON retornado pela consulta de colaboradores
@@ -9,6 +10,7 @@ public record ColaboradorRespostaDTO(
         String nome,
         LocalDate dataAdmissao,
         String cargo,
-        AvaliacaoComportamentoDTO avaliacaoComportamento
+        AvaliacaoComportamentoDTO avaliacaoComportamento,
+        List<EntregaRepostaDTO> entregas
     ) {
 }

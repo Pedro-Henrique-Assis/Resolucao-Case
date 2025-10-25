@@ -3,6 +3,8 @@ package com.example.demo.infrastructure.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +28,9 @@ public class Colaborador {
     // Garante a integridade dos dados em caso de exclusão de um colaborador
     @OneToOne(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private AvaliacaoComportamento avaliacaoComportamento;
+
+    @OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Entrega> entregas = new ArrayList<>();
 
     public Colaborador() {
     }
@@ -80,5 +85,18 @@ public class Colaborador {
         if (avaliacaoComportamento != null) {
             avaliacaoComportamento.setColaborador(this);
         }
+    }
+
+    public List<Entrega> getEntregas() {
+        return entregas;
+    }
+
+    public void setEntregas(List<Entrega> entregas) {
+        this.entregas = entregas;
+    }
+
+    public void adicionarDesafio(Entrega entrega) {
+        entregas.add(entrega);
+        entrega.setColaborador(this);
     }
 }
