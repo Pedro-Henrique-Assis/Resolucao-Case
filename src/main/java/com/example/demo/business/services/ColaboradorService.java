@@ -50,11 +50,19 @@ public class ColaboradorService {
         AvaliacaoComportamento avaliacao = colaborador.getAvaliacaoComportamento();
 
         if (avaliacao != null) {
+            int soma = avaliacao.getNotaAvaliacaoComportamental() +
+                    avaliacao.getNotaAprendizado() +
+                    avaliacao.getNotaTomadaDecisao() +
+                    avaliacao.getNotaAutonomia();
+
+            float media = soma / 4.0f;
+
             notas = new AvaliacaoComportamentoDTO(
                     avaliacao.getNotaAvaliacaoComportamental(),
                     avaliacao.getNotaAprendizado(),
                     avaliacao.getNotaTomadaDecisao(),
-                    avaliacao.getNotaAutonomia()
+                    avaliacao.getNotaAutonomia(),
+                    media
             );
         }
 
