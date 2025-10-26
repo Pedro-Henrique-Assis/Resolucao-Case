@@ -65,7 +65,7 @@ public class ColaboradorController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{matricula}")
+    @PatchMapping("/{matricula}")
     public ResponseEntity<Void> atualizarColaboradorPorMatricula(@PathVariable("matricula") String matricula,
                                                                  @Valid @RequestBody AtualizaColaboradorDTO atualizaColaboradorDTO) {
 

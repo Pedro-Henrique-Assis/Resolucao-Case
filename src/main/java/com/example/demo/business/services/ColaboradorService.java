@@ -45,12 +45,14 @@ public class ColaboradorService {
         return colaboradorSalvo.getMatricula();
     }
 
+    @Transactional(readOnly = true)
     public Optional<ColaboradorRespostaDTO> consultarColaboradorPorMatricula(String matricula) {
         return colaboradorRepository
                 .findById(UUID.fromString(matricula))
                 .map(this::formatarJsonDTO);
     }
 
+    @Transactional(readOnly = true)
     public List<ColaboradorRespostaDTO> listarColaboradores() {
         return colaboradorRepository.findAll().stream().map(this::formatarJsonDTO).collect(Collectors.toList());
     }
@@ -96,13 +98,33 @@ public class ColaboradorService {
     public PerformanceDTO calcularPerformanceFinal(String matricula) {
         var matriculaUUID = UUID.fromString(matricula);
 
+        logger.debug("Iniciando o cálculo de performance final do colaborador de matrícula '{}'", matricula);
+
         var colaborador = colaboradorRepository.findById(matriculaUUID)
                 .orElseThrow(() -> new ResourceNotFoundException("Colaborador não encontrado"));
+
+        logger.debug("Colaborador encontrado. Buscando avaliação.");
 
         var avaliacaoComportamento = colaborador.getAvaliacaoComportamento();
 
         if (avaliacaoComportamento == null) {
+            logger.warn("Avaliação comportamental não encontrada");
             throw new NegocioException("Avaliação comportamental não foi realizada.");
+        }
+
+        logger.debug("Avaliação encontrada.");
+
+
+        logger.debug("Obtendo lista de entregas do colaborador");
+        List<Entrega> entregas = colaborador.getEntregas();
+
+        logger.debug("Lista de entregas encontrada.");
+
+        // O usuário só pode pedir o cálculo da performance final depois
+        // que ele já tiver cadastrado pelo menos 2 entregas.
+        if (entregas.size() < 2) {
+            logger.warn("O colaborador possui menos de 2 entregas. O cálculo não será possível");
+            throw new NegocioException("Colaborador deve ter no minimo 2 entregas cadastradas.");
         }
 
         BigDecimal somaAvaliacaoComportamento = BigDecimal.valueOf(avaliacaoComportamento.getNotaAvaliacaoComportamental())
@@ -113,13 +135,7 @@ public class ColaboradorService {
         // Fórmula (n1 + n2 + n3 + n4) / 4 [Regra de negócio sem peso na notas]
         BigDecimal mediaComportamental = somaAvaliacaoComportamento.divide(new BigDecimal("4"), 2, RoundingMode.HALF_UP);
 
-        List<Entrega> entregas = colaborador.getEntregas();
-
-        // O usuário só pode pedir o cálculo da performance final depois
-        // que ele já tiver cadastrado pelo menos 2 entregas.
-        if (entregas.size() < 2) {
-            throw new NegocioException("Colaborador deve ter no minimo 2 entregas cadastradas.");
-        }
+        logger.debug("Média de notas comportamentais calculada com sucesso");
 
         BigDecimal somaEntregas = BigDecimal.ZERO;
 
@@ -129,10 +145,14 @@ public class ColaboradorService {
 
         BigDecimal mediaEntregas = somaEntregas.divide(new BigDecimal(entregas.size()), 2, RoundingMode.HALF_UP);
 
+        logger.debug("Média de notas das entregas calculada com sucesso");
+
         // Sem peso em cada média por regra de negócio
         BigDecimal notaFinal = mediaEntregas.add(mediaComportamental);
 
         var mediasDTO = new MediaPerformanceDTO(mediaComportamental, mediaEntregas, notaFinal);
+
+        logger.info("Nota final de performance calculada com sucesso");
 
         return new PerformanceDTO(
                 colaborador.getMatricula(),
@@ -147,8 +167,14 @@ public class ColaboradorService {
     // Parametros: objeto do tipo Colaborador cadastrado no banco de dados
     // Retorno: objeto do tipo ColaboradorRespostaDTO utilizado pela ResponseEntity na classe ColaboradorController
     private ColaboradorRespostaDTO formatarJsonDTO(Colaborador colaborador) {
+        logger.debug("Iniciando a montagem do JSON de resposta para a Controller");
+
         DetalhesAvaliacaoComportamentoDTO notas = null;
+
+        logger.debug("Buscando avaliações do colaborador");
         AvaliacaoComportamento avaliacao = colaborador.getAvaliacaoComportamento();
+
+        logger.debug("Avaliações encontradas com sucesso");
 
         if (avaliacao != null) {
             BigDecimal soma = BigDecimal.valueOf(avaliacao.getNotaAvaliacaoComportamental())
@@ -158,6 +184,8 @@ public class ColaboradorService {
 
             BigDecimal media = soma.divide(new BigDecimal("4"), 2, RoundingMode.HALF_UP);
 
+            logger.debug("Média das avaliações calculada com sucesso");
+
             notas = new DetalhesAvaliacaoComportamentoDTO(
                     avaliacao.getNotaAvaliacaoComportamental(),
                     avaliacao.getNotaAprendizado(),
@@ -165,8 +193,10 @@ public class ColaboradorService {
                     avaliacao.getNotaAutonomia(),
                     media
             );
+            logger.debug("DTO de resposta da avaliação comportamental montado com sucesso");
         }
 
+        logger.debug("Buscando entregas do colaborador");
         List<EntregaRepostaDTO> entregasDTO = colaborador.getEntregas()
                 .stream()
                 .map(entrega -> new EntregaRepostaDTO(
@@ -176,6 +206,9 @@ public class ColaboradorService {
                 ))
                 .collect(Collectors.toList());
 
+        logger.debug("Entregas encontradas com sucesso");
+
+        logger.info("Avaliações e entregas encontradas com sucesso. Formatando DTO de resposta do colaborador");
         return new ColaboradorRespostaDTO(
                 colaborador.getMatricula(),
                 colaborador.getNome(),

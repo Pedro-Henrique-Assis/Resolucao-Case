@@ -35,8 +35,7 @@ public class Colaborador {
     public Colaborador() {
     }
 
-    public Colaborador(UUID matricula, String nome, LocalDate dataAdmissao, String cargo) {
-        this.matricula = matricula;
+    public Colaborador(String nome, LocalDate dataAdmissao, String cargo) {
         this.nome = nome;
         this.dataAdmissao = dataAdmissao;
         this.cargo = cargo;
@@ -44,10 +43,6 @@ public class Colaborador {
 
     public UUID getMatricula() {
         return matricula;
-    }
-
-    public void setMatricula(UUID matricula) {
-        this.matricula = matricula;
     }
 
     public String getNome() {
@@ -95,7 +90,7 @@ public class Colaborador {
         this.entregas = entregas;
     }
 
-    public void adicionarDesafio(Entrega entrega) {
+    public void adicionarEntrega(Entrega entrega) {
         entregas.add(entrega);
         entrega.setColaborador(this);
     }

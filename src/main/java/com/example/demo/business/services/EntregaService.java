@@ -1,6 +1,5 @@
 package com.example.demo.business.services;
 
-import com.example.demo.controller.dto.AtualizaColaboradorDTO;
 import com.example.demo.controller.dto.AtualizaEntregaDTO;
 import com.example.demo.controller.dto.CadastroEntregaDTO;
 import com.example.demo.controller.dto.EntregaRepostaDTO;
@@ -124,38 +123,52 @@ public class EntregaService {
         var entrega = entregaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("A entrega consultada não existe: " + id));
 
+        logger.debug("Entrega encontrada. Verificando se a entrega pertence ao colaborador");
+
         // Verifica se a entrega pertence mesmo àquele colaborador (Inibe o risco de apagar entregas de outros colaboradores)
         if (!entrega.getColaborador().getMatricula().equals(colaborador.getMatricula())) {
             throw new NegocioException("Acesso negado: A entrega " + id + " não pertence ao colaborador " + matricula);
         }
 
+        logger.debug("Validações finalizadas. Iniciando a exclusão da entrega 'id={}'", id);
+
         entregaRepository.deleteById(id);
-        logger.info("Entrega encontrada e deletada.");
+        logger.info("Entrega deletada com sucesso.");
     }
 
     @Transactional
     public void atualizarEntregaPorId(String matricula, Long id, AtualizaEntregaDTO atualizaEntregaDTO) {
         var matriculaUUID = UUID.fromString(matricula);
 
+        logger.debug("Iniciando a verificação se o colaborador de matricula '{}' existe", matricula);
+
         Colaborador colaborador = colaboradorRepository.findById(matriculaUUID)
                 .orElseThrow(() -> new RuntimeException("Colaborador não encontrado com a matrícula: " + matricula));
 
+        logger.debug("Colaborador encontrado. Verificando a existência da entrega id={}", id);
         Entrega entrega = entregaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Entrega não encontrada com o ID: " + id));
+
+        logger.debug("Entrega encontrada. Verificando se a entrega pertence ao colaborador");
 
         // Verifica se a entrega (id) pertence ao colaborador
         if (!entrega.getColaborador().getMatricula().equals(colaborador.getMatricula())) {
             throw new RuntimeException("Acesso negado: A entrega " + id + " não pertence ao colaborador " + matricula);
         }
 
+        logger.debug("Validações finalizadas. Iniciando o processo de atualização das informações");
+
         if (atualizaEntregaDTO.descricao() != null) {
             entrega.setDescricao(atualizaEntregaDTO.descricao());
+            logger.debug("Descrição atualizada com sucesso");
         }
 
         if (atualizaEntregaDTO.nota() != null) {
             entrega.setNota(atualizaEntregaDTO.nota());
+            logger.debug("Nota atualizada com sucesso");
         }
 
         entregaRepository.save(entrega);
+        logger.info("Colaborador atualizado com sucesso");
     }
 }

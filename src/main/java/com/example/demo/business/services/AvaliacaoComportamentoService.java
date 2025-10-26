@@ -175,6 +175,8 @@ public class AvaliacaoComportamentoService {
 
         BigDecimal media = soma.divide(new BigDecimal("4"), 2, RoundingMode.HALF_UP);
 
+        logger.debug("Média das notas calculada com sucesso");
+
         var novasNotasDTO = new DetalhesAvaliacaoComportamentoDTO(
                 avaliacao.getNotaAvaliacaoComportamental(),
                 avaliacao.getNotaAprendizado(),
