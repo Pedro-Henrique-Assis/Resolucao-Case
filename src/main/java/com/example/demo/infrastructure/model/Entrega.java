@@ -17,7 +17,7 @@ public class Entrega {
 
     @Column(name = "nota")
     @Min(1) @Max(5)
-    private Byte nota;
+    private Double nota;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "matricula", referencedColumnName = "matricula", nullable = false)
@@ -48,11 +48,11 @@ public class Entrega {
         this.descricao = descricao;
     }
 
-    public Byte getNota() {
+    public Double getNota() {
         return nota;
     }
 
-    public void setNota(Byte nota) {
+    public void setNota(Double nota) {
         this.nota = nota;
     }
 

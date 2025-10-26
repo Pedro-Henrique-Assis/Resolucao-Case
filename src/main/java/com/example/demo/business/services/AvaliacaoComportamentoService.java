@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -93,6 +94,7 @@ public class AvaliacaoComportamentoService {
         return Optional.of(respostaDTO);
     }
 
+    @Transactional
     public void atualizaAvaliacaoPorMarticula(
             String matricula,
             AtualizaAvaliacaoComportamentoDTO novasNotas) {
@@ -100,38 +102,42 @@ public class AvaliacaoComportamentoService {
         var matriculaUUID = UUID.fromString(matricula);
 
         logger.debug("Verificando se o colaborador de matricula '{}' existe", matricula);
-        var colaboradorEntity = colaboradorRepository.findById(matriculaUUID);
+        var colaborador = colaboradorRepository.findById(matriculaUUID)
+                .orElseThrow(() -> new RuntimeException("Colaborador não encontrado com a matrícula: " + matricula));
 
-        if (colaboradorEntity.isPresent()) {
-            var colaborador = colaboradorEntity.get();
+        logger.debug("Colaborador encontrado. Iniciando atualização das notas");
 
-            logger.debug("Colaborador encontrado. Iniciando atualização das notas.");
+        var notas = colaborador.getAvaliacaoComportamento();
 
-            var notas = colaborador.getAvaliacaoComportamento();
-
-            if (novasNotas.notaAvaliacaoComportamental() != null) {
-                notas.setNotaAvaliacaoComportamental(novasNotas.notaAvaliacaoComportamental());
-                logger.debug("Nota da avaliação comportamental atualizada");
-            }
-
-            if (novasNotas.notaAprendizado() != null) {
-                notas.setNotaAprendizado(novasNotas.notaAprendizado());
-                logger.debug("Nota da avaliação de aprendizado atualizada");
-            }
-
-            if (novasNotas.notaTomadaDecisao() != null) {
-                notas.setNotaTomadaDecisao(novasNotas.notaTomadaDecisao());
-                logger.debug("Nota da avaliação de tomada de decisao atualizada");
-            }
-
-            if (novasNotas.notaAutonomia() != null) {
-                notas.setNotaAutonomia(novasNotas.notaAutonomia());
-                logger.debug("Nota da avaliação de autonomia atualizada");
-            }
-
-            logger.info("Notas atualizadas com sucesso");
-            avaliacaoComportamentoRepository.save(notas);
+        // Verifica se o colaborador possui notas cadastradas
+        if (notas == null) {
+            throw new RuntimeException("O colaborador " + matricula + " não possui uma avaliação comportamental para atualizar");
         }
+
+        logger.debug("Avaliação id={} encontrada. Iniciando atualização das notas.", notas.getId());
+
+        if (novasNotas.notaAvaliacaoComportamental() != null) {
+            notas.setNotaAvaliacaoComportamental(novasNotas.notaAvaliacaoComportamental());
+            logger.debug("Nota da avaliação comportamental atualizada");
+        }
+
+        if (novasNotas.notaAprendizado() != null) {
+            notas.setNotaAprendizado(novasNotas.notaAprendizado());
+            logger.debug("Nota da avaliação de aprendizado atualizada");
+        }
+
+        if (novasNotas.notaTomadaDecisao() != null) {
+            notas.setNotaTomadaDecisao(novasNotas.notaTomadaDecisao());
+            logger.debug("Nota da avaliação de tomada de decisao atualizada");
+        }
+
+        if (novasNotas.notaAutonomia() != null) {
+            notas.setNotaAutonomia(novasNotas.notaAutonomia());
+            logger.debug("Nota da avaliação de autonomia atualizada");
+        }
+
+        logger.info("Notas atualizadas com sucesso");
+        avaliacaoComportamentoRepository.save(notas);
 
     }
 
@@ -169,14 +175,14 @@ public class AvaliacaoComportamentoService {
         logger.debug("Iniciando formatação do JSON de resposta da avaliacao id={}", avaliacao.getId());
 
         logger.debug("Obtendo as notas da avaliacao");
-        Byte notaAvaliacaoComportamental = avaliacao.getNotaAvaliacaoComportamental();
-        Byte notaAprendizado = avaliacao.getNotaAprendizado();
-        Byte notaTomadaDecisao = avaliacao.getNotaTomadaDecisao();
-        Byte notaAutonomia = avaliacao.getNotaAutonomia();
+        Double notaAvaliacaoComportamental = avaliacao.getNotaAvaliacaoComportamental();
+        Double notaAprendizado = avaliacao.getNotaAprendizado();
+        Double notaTomadaDecisao = avaliacao.getNotaTomadaDecisao();
+        Double notaAutonomia = avaliacao.getNotaAutonomia();
 
         logger.debug("Calculando a media das notas");
-        int soma = notaAvaliacaoComportamental + notaAprendizado + notaTomadaDecisao + notaAutonomia;
-        float media = soma / 4.0f;
+        Double soma = notaAvaliacaoComportamental + notaAprendizado + notaTomadaDecisao + notaAutonomia;
+        Double media = soma / 4.0;
 
         var novasNotasDTO = new AvaliacaoComportamentoDTO(
                 avaliacao.getNotaAvaliacaoComportamental(),

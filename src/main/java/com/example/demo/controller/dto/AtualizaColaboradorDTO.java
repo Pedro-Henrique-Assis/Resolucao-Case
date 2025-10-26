@@ -1,4 +1,10 @@
 package com.example.demo.controller.dto;
 
-public record AtualizaColaboradorDTO(String nome, String cargo) {
+import jakarta.validation.constraints.Size;
+
+public record AtualizaColaboradorDTO(
+        @Size(min = 1, message = "A descrição não pode ser vazia.")
+        String nome,
+        @Size(min = 1, message = "O cargo não pode ser vazia.")
+        String cargo) {
 }

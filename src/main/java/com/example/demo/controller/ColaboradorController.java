@@ -6,6 +6,7 @@ import com.example.demo.controller.dto.CadastroColaboradorDTO;
 import com.example.demo.controller.dto.ColaboradorRespostaDTO;
 import com.example.demo.controller.dto.PerformanceDTO;
 import com.example.demo.infrastructure.model.Colaborador;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class ColaboradorController {
     }
 
     @PostMapping
-    public ResponseEntity<Colaborador> cadastrarColaborador(@RequestBody CadastroColaboradorDTO cadastroColaboradorDTO) {
+    public ResponseEntity<Colaborador> cadastrarColaborador(@Valid @RequestBody CadastroColaboradorDTO cadastroColaboradorDTO) {
         var matriculaColaborador = colaboradorService.cadastrarColaborador(cadastroColaboradorDTO);
 
         // Cria a requisição e retorna o path com a matricula do colaborador cadastrado
@@ -43,7 +44,7 @@ public class ColaboradorController {
         }
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<ColaboradorRespostaDTO>> listarColaboradores() {
         var colaboradores = colaboradorService.listarColaboradores();
 

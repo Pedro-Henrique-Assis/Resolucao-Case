@@ -1,5 +1,7 @@
 package com.example.demo.business.services;
 
+import com.example.demo.controller.dto.AtualizaColaboradorDTO;
+import com.example.demo.controller.dto.AtualizaEntregaDTO;
 import com.example.demo.controller.dto.CadastroEntregaDTO;
 import com.example.demo.controller.dto.EntregaRepostaDTO;
 import com.example.demo.infrastructure.model.Colaborador;
@@ -10,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -132,5 +135,31 @@ public class EntregaService {
         } else {
             logger.warn("Colaborador de matrícula '{}' não encontrado", matricula);
         }
+    }
+
+    @Transactional
+    public void atualizarEntregaPorId(String matricula, Long id, AtualizaEntregaDTO atualizaEntregaDTO) {
+        var matriculaUUID = UUID.fromString(matricula);
+
+        Colaborador colaborador = colaboradorRepository.findById(matriculaUUID)
+                .orElseThrow(() -> new RuntimeException("Colaborador não encontrado com a matrícula: " + matricula));
+
+        Entrega entrega = entregaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Entrega não encontrada com o ID: " + id));
+
+        // Verifica se a entrega (id) pertence ao colaborador
+        if (!entrega.getColaborador().getMatricula().equals(colaborador.getMatricula())) {
+            throw new RuntimeException("Acesso negado: A entrega " + id + " não pertence ao colaborador " + matricula);
+        }
+
+        if (atualizaEntregaDTO.descricao() != null) {
+            entrega.setDescricao(atualizaEntregaDTO.descricao());
+        }
+
+        if (atualizaEntregaDTO.nota() != null) {
+            entrega.setNota(atualizaEntregaDTO.nota());
+        }
+
+        entregaRepository.save(entrega);
     }
 }

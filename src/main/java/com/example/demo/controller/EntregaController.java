@@ -1,14 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.business.services.EntregaService;
+import com.example.demo.controller.dto.AtualizaEntregaDTO;
 import com.example.demo.controller.dto.CadastroEntregaDTO;
 import com.example.demo.controller.dto.EntregaRepostaDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/colaborador/{matricula}/entrega")
@@ -22,7 +23,7 @@ public class EntregaController {
 
     @PostMapping
     public ResponseEntity<EntregaRepostaDTO> cadastrarEntregaColaborador(@PathVariable("matricula") String matricula,
-                                                                         @RequestBody CadastroEntregaDTO cadastroEntregaDTO) {
+                                                                         @Valid @RequestBody CadastroEntregaDTO cadastroEntregaDTO) {
 
         var novaEntrega = entregaService.cadastrarEntregaColaborador(matricula, cadastroEntregaDTO);
 
@@ -50,6 +51,16 @@ public class EntregaController {
         var entregas = entregaService.consultarEntregaPorId(matricula, id);
 
         return ResponseEntity.ok(entregas);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizarEntregaPorId(@PathVariable("matricula") String matricula,
+                                                      @PathVariable("id") Long id,
+                                                      @Valid @RequestBody AtualizaEntregaDTO atualizaEntregaDTO) {
+
+        entregaService.atualizarEntregaPorId(matricula, id, atualizaEntregaDTO);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

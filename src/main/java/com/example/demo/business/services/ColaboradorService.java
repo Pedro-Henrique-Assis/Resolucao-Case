@@ -6,7 +6,10 @@ import com.example.demo.infrastructure.model.Colaborador;
 import com.example.demo.infrastructure.model.Entrega;
 import com.example.demo.infrastructure.repository.ColaboradorRepository;
 import com.example.demo.infrastructure.repository.EntregaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 public class ColaboradorService {
 
     private final ColaboradorRepository colaboradorRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ColaboradorService.class);
 
     //Injeção de dependência da classe ColaboradorRepository
     public ColaboradorService(ColaboradorRepository colaboradorRepository) {
@@ -56,25 +61,30 @@ public class ColaboradorService {
         }
     }
 
+    @Transactional
     public void atualizaColaboradorPorMatricula(String matricula, AtualizaColaboradorDTO atualizaColaboradorDTO) {
         var matriculaUUID = UUID.fromString(matricula);
 
-        var colaboradorEntity = colaboradorRepository.findById(matriculaUUID);
+        logger.debug("Iniciando a atualização do colaborador de matrícula '{}'", matricula);
 
-        if (colaboradorEntity.isPresent()) {
-            var colaborador = colaboradorEntity.get();
+        var colaborador = colaboradorRepository.findById(matriculaUUID)
+                .orElseThrow(() -> new RuntimeException("Colaborador não encontrado com a matrícula: " + matricula));
 
-            if (atualizaColaboradorDTO.nome() != null) {
-                colaborador.setNome(atualizaColaboradorDTO.nome());
-            }
+        logger.debug("Colaborador encontrado. Iniciando atualização das notas");
 
-            if (atualizaColaboradorDTO.cargo() != null) {
-                colaborador.setCargo(atualizaColaboradorDTO.cargo());
-            }
-
-            // Realiza a operação de update daquele colaborador específico
-            colaboradorRepository.save(colaborador);
+        if (atualizaColaboradorDTO.nome() != null) {
+            colaborador.setNome(atualizaColaboradorDTO.nome());
+            logger.debug("Nome atualizado com sucesso");
         }
+
+        if (atualizaColaboradorDTO.cargo() != null) {
+            colaborador.setCargo(atualizaColaboradorDTO.cargo());
+            logger.debug("Cargo atualizado com sucesso");
+        }
+
+        // Realiza a operação de update daquele colaborador específico
+        colaboradorRepository.save(colaborador);
+        logger.info("Atualização do colaborador finalizada com sucesso");
     }
 
     public PerformanceDTO calcularPerformanceFinal(String matricula) {
@@ -89,13 +99,14 @@ public class ColaboradorService {
             throw new RuntimeException("Avaliação comportamental não foi realizada.");
         }
 
-        int somaAvaliacaoComportamento =
+        Double somaAvaliacaoComportamento =
                 avaliacaoComportamento.getNotaAvaliacaoComportamental() +
                 avaliacaoComportamento.getNotaAprendizado() +
                 avaliacaoComportamento.getNotaTomadaDecisao() +
                 avaliacaoComportamento.getNotaAutonomia();
 
-        float mediaComportamental = somaAvaliacaoComportamento / 4.0f;
+        // Fórmula (n1 + n2 + n3 + n4) / 4 [Regra de negócio sem peso na notas]
+        Double mediaComportamental = somaAvaliacaoComportamento / 4.0;
 
         List<Entrega> entregas = colaborador.getEntregas();
 
@@ -113,6 +124,7 @@ public class ColaboradorService {
 
         double mediaEntregas = (double) somaEntregas / entregas.size();
 
+        // Sem peso em cada média por regra de negócio
         double notaFinal = mediaEntregas + mediaComportamental;
 
         var mediasDTO = new MediaPerformanceDTO(mediaComportamental, mediaEntregas, notaFinal);
@@ -124,17 +136,22 @@ public class ColaboradorService {
         );
     }
 
+    // Método que formata o JSON de resposta gerado pela consulta de colaboradores
+    // Objetivo: não gerar um loop infinito de informações aninhadas ao retornar as avaliações e entregas
+    // + tornar o JSON mais agradável e legível
+    // Parametros: objeto do tipo Colaborador cadastrado no banco de dados
+    // Retorno: objeto do tipo ColaboradorRespostaDTO utilizado pela ResponseEntity na classe ColaboradorController
     private ColaboradorRespostaDTO formatarJsonDTO(Colaborador colaborador) {
         AvaliacaoComportamentoDTO notas = null;
         AvaliacaoComportamento avaliacao = colaborador.getAvaliacaoComportamento();
 
         if (avaliacao != null) {
-            int soma = avaliacao.getNotaAvaliacaoComportamental() +
+            Double soma = avaliacao.getNotaAvaliacaoComportamental() +
                     avaliacao.getNotaAprendizado() +
                     avaliacao.getNotaTomadaDecisao() +
                     avaliacao.getNotaAutonomia();
 
-            float media = soma / 4.0f;
+            Double media = soma / 4.0;
 
             notas = new AvaliacaoComportamentoDTO(
                     avaliacao.getNotaAvaliacaoComportamental(),

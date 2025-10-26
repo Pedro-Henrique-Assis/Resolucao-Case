@@ -5,6 +5,7 @@ import com.example.demo.controller.dto.AtualizaAvaliacaoComportamentoDTO;
 import com.example.demo.controller.dto.AvaliacaoComportamentoDTO;
 import com.example.demo.controller.dto.AvaliacaoComportamentoRespostaDTO;
 import com.example.demo.infrastructure.model.AvaliacaoComportamento;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class AvaliacaoComportamentoController {
     @PostMapping
     public ResponseEntity<AvaliacaoComportamento> cadastrarAvaliacao(
             @PathVariable("matricula") String matricula,
-            @RequestBody AvaliacaoComportamentoDTO avaliacaoComportamentoDTO) {
+            @Valid @RequestBody AvaliacaoComportamentoDTO avaliacaoComportamentoDTO) {
 
         var idAvaliacaoComportamento = avaliacaoComportamentoService.cadastrarAvaliacaoComportamental(matricula, avaliacaoComportamentoDTO);
 
