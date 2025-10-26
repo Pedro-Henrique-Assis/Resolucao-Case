@@ -18,21 +18,18 @@ public class ColaboradorService {
 
     private final ColaboradorRepository colaboradorRepository;
 
-    private final EntregaRepository entregaRepository;
-
     //Injeção de dependência da classe ColaboradorRepository
-    public ColaboradorService(ColaboradorRepository colaboradorRepository, EntregaRepository entregaRepository) {
+    public ColaboradorService(ColaboradorRepository colaboradorRepository) {
         this.colaboradorRepository = colaboradorRepository;
-        this.entregaRepository = entregaRepository;
     }
 
-    public UUID cadastrarColaborador(ColaboradorDTO colaboradorDTO) {
+    public UUID cadastrarColaborador(CadastroColaboradorDTO cadastroColaboradorDTO) {
 
         // DTO -> Entity
         var colaborador = new Colaborador();
-        colaborador.setNome(colaboradorDTO.nome());
-        colaborador.setDataAdmissao(colaboradorDTO.dataAdmissao());
-        colaborador.setCargo(colaboradorDTO.cargo());
+        colaborador.setNome(cadastroColaboradorDTO.nome());
+        colaborador.setDataAdmissao(cadastroColaboradorDTO.dataAdmissao());
+        colaborador.setCargo(cadastroColaboradorDTO.cargo());
 
         var colaboradorSalvo = colaboradorRepository.save(colaborador);
 
@@ -80,24 +77,6 @@ public class ColaboradorService {
         }
     }
 
-    public Entrega cadastrarEntregaColaborador(String matricula, EntregaDTO entregaDTO) {
-        var matriculaUUID = UUID.fromString(matricula);
-
-        Colaborador colaborador = colaboradorRepository.findById(matriculaUUID)
-                .orElseThrow(() -> new RuntimeException("Colaborador não encontrado com a matrícula: " + matricula));
-
-        if (colaborador.getEntregas().size() >= 4) {
-            throw new RuntimeException("O colaborador já atingiu o limite de 4 entregas cadastradas");
-        }
-
-        var entrega = new Entrega();
-        entrega.setDescricao(entregaDTO.descricao());
-        entrega.setNota(entregaDTO.nota());
-        entrega.setColaborador(colaborador);
-
-        return entregaRepository.save(entrega);
-    }
-
     public PerformanceDTO calcularPerformanceFinal(String matricula) {
         var matriculaUUID = UUID.fromString(matricula);
 
@@ -143,23 +122,6 @@ public class ColaboradorService {
                 colaborador.getNome(),
                 mediasDTO
         );
-    }
-
-    public List<EntregaRepostaDTO> listarEntregasPorColaborador(String matricula) {
-        var matriculaUUID = UUID.fromString(matricula);
-
-        var colaborador = colaboradorRepository.findById(matriculaUUID)
-                .orElseThrow(() -> new RuntimeException("Colaborador não encontrado"));
-
-        List<Entrega> entregas = colaborador.getEntregas();
-
-        return entregas.stream()
-                .map(entrega -> new EntregaRepostaDTO(
-                        entrega.getId(),
-                        entrega.getDescricao(),
-                        entrega.getNota()
-                ))
-                .collect(Collectors.toList());
     }
 
     private ColaboradorRespostaDTO formatarJsonDTO(Colaborador colaborador) {

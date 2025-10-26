@@ -1,32 +1,30 @@
 package com.example.demo.controller;
 
-import com.example.demo.business.services.ColaboradorService;
-
-import com.example.demo.controller.dto.EntregaDTO;
+import com.example.demo.business.services.EntregaService;
+import com.example.demo.controller.dto.CadastroEntregaDTO;
 import com.example.demo.controller.dto.EntregaRepostaDTO;
-import com.example.demo.controller.dto.PerformanceDTO;
-import com.example.demo.infrastructure.model.Entrega;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/colaborador/{matricula}/entrega")
 public class EntregaController {
 
-    private final ColaboradorService colaboradorService;
+    private final EntregaService entregaService;
 
-    public EntregaController(ColaboradorService colaboradorService) {
-        this.colaboradorService = colaboradorService;
+    public EntregaController(EntregaService entregaService) {
+        this.entregaService = entregaService;
     }
 
     @PostMapping
     public ResponseEntity<EntregaRepostaDTO> cadastrarEntregaColaborador(@PathVariable("matricula") String matricula,
-                                                                         @RequestBody EntregaDTO entregaDTO) {
+                                                                         @RequestBody CadastroEntregaDTO cadastroEntregaDTO) {
 
-        var novaEntrega = colaboradorService.cadastrarEntregaColaborador(matricula, entregaDTO);
+        var novaEntrega = entregaService.cadastrarEntregaColaborador(matricula, cadastroEntregaDTO);
 
         var entregaRespostaDTO = new EntregaRepostaDTO(
                 novaEntrega.getId(),
@@ -43,7 +41,21 @@ public class EntregaController {
     public ResponseEntity<List<EntregaRepostaDTO>> listarEntregasPorColaborador(
             @PathVariable("matricula") String matricula) {
 
-        List<EntregaRepostaDTO> entregas = colaboradorService.listarEntregasPorColaborador(matricula);
+        List<EntregaRepostaDTO> entregas = entregaService.listarEntregasPorColaborador(matricula);
         return ResponseEntity.ok(entregas);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EntregaRepostaDTO> consultarEntregaPorId(@PathVariable("matricula") String matricula, @PathVariable("id") Long id) {
+        var entregas = entregaService.consultarEntregaPorId(matricula, id);
+
+        return ResponseEntity.ok(entregas);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarEntregaColaborador(@PathVariable("matricula") String matricula, @PathVariable("id") Long id) {
+        entregaService.deletarEntregaColaborador(matricula, id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.business.services.ColaboradorService;
 import com.example.demo.controller.dto.AtualizaColaboradorDTO;
-import com.example.demo.controller.dto.ColaboradorDTO;
+import com.example.demo.controller.dto.CadastroColaboradorDTO;
 import com.example.demo.controller.dto.ColaboradorRespostaDTO;
 import com.example.demo.controller.dto.PerformanceDTO;
 import com.example.demo.infrastructure.model.Colaborador;
@@ -24,8 +24,8 @@ public class ColaboradorController {
     }
 
     @PostMapping
-    public ResponseEntity<Colaborador> cadastrarColaborador(@RequestBody ColaboradorDTO colaboradorDTO) {
-        var matriculaColaborador = colaboradorService.cadastrarColaborador(colaboradorDTO);
+    public ResponseEntity<Colaborador> cadastrarColaborador(@RequestBody CadastroColaboradorDTO cadastroColaboradorDTO) {
+        var matriculaColaborador = colaboradorService.cadastrarColaborador(cadastroColaboradorDTO);
 
         // Cria a requisição e retorna o path com a matricula do colaborador cadastrado
         return ResponseEntity.created(URI.create("/api/colaborador/" + matriculaColaborador.toString())).build();
