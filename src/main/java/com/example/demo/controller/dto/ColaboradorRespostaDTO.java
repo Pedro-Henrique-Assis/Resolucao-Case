@@ -10,7 +10,7 @@ public record ColaboradorRespostaDTO(
         String nome,
         LocalDate dataAdmissao,
         String cargo,
-        AvaliacaoComportamentoDTO avaliacaoComportamento,
+        DetalhesAvaliacaoComportamentoDTO avaliacaoComportamento,
         List<EntregaRepostaDTO> entregas
     ) {
 }

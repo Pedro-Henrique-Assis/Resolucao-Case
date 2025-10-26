@@ -34,7 +34,7 @@ public class EntregaController {
         );
 
         return ResponseEntity.created(
-                URI.create("/api/colaborador/" + matricula + "/entrega" + novaEntrega.getId()))
+                URI.create("/api/colaborador/" + matricula + "/entrega/" + novaEntrega.getId()))
                 .body(entregaRespostaDTO);
     }
 

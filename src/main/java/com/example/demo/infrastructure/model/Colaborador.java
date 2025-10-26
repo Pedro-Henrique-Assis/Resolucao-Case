@@ -16,13 +16,13 @@ public class Colaborador {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID matricula;
 
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "data_admissao")
+    @Column(name = "data_admissao", nullable = false)
     private LocalDate dataAdmissao;
 
-    @Column(name = "cargo")
+    @Column(name = "cargo", nullable = false)
     private String cargo;
 
     // Garante a integridade dos dados em caso de exclusão de um colaborador

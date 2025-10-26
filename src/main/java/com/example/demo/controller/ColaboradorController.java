@@ -25,7 +25,7 @@ public class ColaboradorController {
     }
 
     @PostMapping
-    public ResponseEntity<Colaborador> cadastrarColaborador(@Valid @RequestBody CadastroColaboradorDTO cadastroColaboradorDTO) {
+    public ResponseEntity<Void> cadastrarColaborador(@Valid @RequestBody CadastroColaboradorDTO cadastroColaboradorDTO) {
         var matriculaColaborador = colaboradorService.cadastrarColaborador(cadastroColaboradorDTO);
 
         // Cria a requisição e retorna o path com a matricula do colaborador cadastrado
@@ -67,7 +67,7 @@ public class ColaboradorController {
 
     @PutMapping("/{matricula}")
     public ResponseEntity<Void> atualizarColaboradorPorMatricula(@PathVariable("matricula") String matricula,
-                                                                 @RequestBody AtualizaColaboradorDTO atualizaColaboradorDTO) {
+                                                                 @Valid @RequestBody AtualizaColaboradorDTO atualizaColaboradorDTO) {
 
         colaboradorService.atualizaColaboradorPorMatricula(matricula, atualizaColaboradorDTO);
         return ResponseEntity.noContent().build();

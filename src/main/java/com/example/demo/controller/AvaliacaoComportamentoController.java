@@ -2,9 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.business.services.AvaliacaoComportamentoService;
 import com.example.demo.controller.dto.AtualizaAvaliacaoComportamentoDTO;
-import com.example.demo.controller.dto.AvaliacaoComportamentoDTO;
+import com.example.demo.controller.dto.CadastroAvaliacaoComportamentoDTO;
 import com.example.demo.controller.dto.AvaliacaoComportamentoRespostaDTO;
-import com.example.demo.infrastructure.model.AvaliacaoComportamento;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,29 +22,21 @@ public class AvaliacaoComportamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoComportamento> cadastrarAvaliacao(
+    public ResponseEntity<Void> cadastrarAvaliacaoComportamental(
             @PathVariable("matricula") String matricula,
-            @Valid @RequestBody AvaliacaoComportamentoDTO avaliacaoComportamentoDTO) {
+            @Valid @RequestBody CadastroAvaliacaoComportamentoDTO cadastroAvaliacaoComportamentoDTO) {
 
-        var idAvaliacaoComportamento = avaliacaoComportamentoService.cadastrarAvaliacaoComportamental(matricula, avaliacaoComportamentoDTO);
+        Long idAvaliacaoComportamento = avaliacaoComportamentoService.cadastrarAvaliacaoComportamental(matricula, cadastroAvaliacaoComportamentoDTO);
 
-        if (idAvaliacaoComportamento.isPresent()) {
-            return ResponseEntity.created(URI.create("/api/colaborador/"+ matricula + "/" + idAvaliacaoComportamento.get())).build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        URI location = URI.create(String.format("/api/colaborador/" + matricula + "/avaliacao/"+ idAvaliacaoComportamento));
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping
     public ResponseEntity<AvaliacaoComportamentoRespostaDTO> consultaAvaliacaoPorMatricula(@PathVariable("matricula") String matricula) {
-        Optional<AvaliacaoComportamentoRespostaDTO> notasOpcional = avaliacaoComportamentoService.consultaAvaliacaoPorMatricula(matricula);
+        var notas = avaliacaoComportamentoService.consultaAvaliacaoPorMatricula(matricula);
 
-        if (notasOpcional.isPresent()) {
-            var notas = notasOpcional.get();
-            return ResponseEntity.ok(notas);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(notas);
     }
 
     @DeleteMapping
@@ -58,7 +49,7 @@ public class AvaliacaoComportamentoController {
     @PutMapping
     public ResponseEntity<Void> atualizaAvaliacaoPorMarticula(
             @PathVariable("matricula") String matricula,
-            @RequestBody AtualizaAvaliacaoComportamentoDTO atualizaAvaliacaoComportamentoDTO) {
+            @Valid @RequestBody AtualizaAvaliacaoComportamentoDTO atualizaAvaliacaoComportamentoDTO) {
 
         avaliacaoComportamentoService.atualizaAvaliacaoPorMarticula(matricula, atualizaAvaliacaoComportamentoDTO);
 

@@ -1,8 +1,10 @@
 package com.example.demo.controller.dto;
 
+import java.math.BigDecimal;
+
 public record MediaPerformanceDTO(
-        double mediaComportamental,
-        double mediaEntregas,
-        double notaFinal
+        BigDecimal mediaComportamental,
+        BigDecimal mediaEntregas,
+        BigDecimal notaFinal
 ) {
 }
