@@ -47,6 +47,13 @@ public class AvaliacaoComportamentoController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deletarAvaliacoesPorMatricula(@PathVariable("matricula") String matricula) {
+        avaliacaoComportamentoService.deletarAvaliacoesPorMatricula(matricula);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping
     public ResponseEntity<Void> atualizaAvaliacaoPorMarticula(
             @PathVariable("matricula") String matricula,

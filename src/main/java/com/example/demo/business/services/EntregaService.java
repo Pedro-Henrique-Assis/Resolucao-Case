@@ -23,7 +23,7 @@ public class EntregaService {
 
     private final EntregaRepository entregaRepository;
 
-    private static Logger logger = LoggerFactory.getLogger(EntregaService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EntregaService.class);
 
     public EntregaService(ColaboradorRepository colaboradorRepository, EntregaRepository entregaRepository) {
         this.colaboradorRepository = colaboradorRepository;
