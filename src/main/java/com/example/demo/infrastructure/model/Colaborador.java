@@ -41,6 +41,13 @@ public class Colaborador {
         this.cargo = cargo;
     }
 
+    public Colaborador(UUID matricula, String nome, LocalDate dataAdmissao, String cargo) {
+        this.matricula = matricula;
+        this.nome = nome;
+        this.dataAdmissao = dataAdmissao;
+        this.cargo = cargo;
+    }
+
     public UUID getMatricula() {
         return matricula;
     }

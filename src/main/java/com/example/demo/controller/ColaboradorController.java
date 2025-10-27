@@ -5,7 +5,6 @@ import com.example.demo.controller.dto.AtualizaColaboradorDTO;
 import com.example.demo.controller.dto.CadastroColaboradorDTO;
 import com.example.demo.controller.dto.ColaboradorRespostaDTO;
 import com.example.demo.controller.dto.PerformanceDTO;
-import com.example.demo.infrastructure.model.Colaborador;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
