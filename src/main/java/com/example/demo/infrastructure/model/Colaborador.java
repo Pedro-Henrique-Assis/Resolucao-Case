@@ -45,6 +45,10 @@ public class Colaborador {
         return matricula;
     }
 
+    public void setMatricula(UUID matricula) {
+        this.matricula = matricula;
+    }
+
     public String getNome() {
         return nome;
     }

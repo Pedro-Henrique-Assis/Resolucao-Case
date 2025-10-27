@@ -63,6 +63,7 @@ public class AvaliacaoComportamentoService {
         return avaliacaoComportamentoSalva.getId();
     }
 
+    @Transactional(readOnly = true)
     public AvaliacaoComportamentoRespostaDTO consultaAvaliacaoPorMatricula(String matricula) {
         logger.debug("Iniciando consulta de avaliação para a matrícula '{}'", matricula);
         var matriculaUUID = UUID.fromString(matricula);

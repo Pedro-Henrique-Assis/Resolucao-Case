@@ -57,6 +57,7 @@ public class EntregaService {
         return entregaRepository.save(entrega);
     }
 
+    @Transactional(readOnly = true)
     public EntregaRepostaDTO consultarEntregaPorId(String matricula, Long id) {
         var matriculaUUID = UUID.fromString(matricula);
 
@@ -87,6 +88,7 @@ public class EntregaService {
         return entregaDTO;
     }
 
+    @Transactional(readOnly = true)
     public List<EntregaRepostaDTO> listarEntregasPorColaborador(String matricula) {
         var matriculaUUID = UUID.fromString(matricula);
 
