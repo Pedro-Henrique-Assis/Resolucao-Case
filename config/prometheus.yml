@@ -2,5 +2,9 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: "api-colaboradores"
+  - job_name: "api-colaboradores-job"
     metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["host.docker.internal:8080"]
+        labels:
+          application: "api-colaborador"
