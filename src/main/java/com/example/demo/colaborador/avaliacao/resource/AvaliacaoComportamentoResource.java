@@ -45,7 +45,7 @@ public class AvaliacaoComportamentoResource {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<Void> atualizaAvaliacaoPorMarticula(
             @PathVariable("matricula") String matricula,
             @Valid @RequestBody AvaliacaoComportamentoAtualizaRequest avaliacaoComportamentoAtualizaRequest) {

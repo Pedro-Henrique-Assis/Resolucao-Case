@@ -1,0 +1,449 @@
+{
+	"info": {
+		"_postman_id": "0ef3227e-030b-42ce-823b-6f711c7a6656",
+		"name": "Case-Itau-Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49559279",
+		"_collection_link": "https://pedro-henrique-assis-195411.postman.co/workspace/Pedro-Henrique-Rodrigues-de-Ass~2cfea151-deed-4dd6-8d1a-4ede639b0577/collection/49559279-0ef3227e-030b-42ce-823b-6f711c7a6656?action=share&source=collection_link&creator=49559279"
+	},
+	"item": [
+		{
+			"name": "Colaborador",
+			"item": [
+				{
+					"name": "Criar-Colaborador",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Carlos Alberto\",\r\n    \"dataAdmissao\": \"2020-08-12\",\r\n    \"cargo\": \"Analista de Engenharia de Analytics Júnior\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar-Colaboradores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar-Colaborador-Por-Matricula",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calcular-Performance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/performance",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"performance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar-Colaborador",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dataAdmissao\": \"2025-10-28\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir-Colaborador",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/4ea3d1cd-2daf-4809-863e-d5c7bd77a388",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"4ea3d1cd-2daf-4809-863e-d5c7bd77a388"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Avaliação Comportamental",
+			"item": [
+				{
+					"name": "Cadastrar-Avaliacao",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notaAvaliacaoComportamental\": 5.0,\r\n    \"notaAprendizado\": 4.0,\r\n    \"notaTomadaDecisao\": 3.5,\r\n    \"notaAutonomia\": 5.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/avaliacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"avaliacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar-Avaliacao",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/avaliacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"avaliacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar-Avaliacao",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notaAprendizado\": 5.0,\r\n    \"notaTomadaDecisao\": 5.0,\r\n    \"notaAutonomia\": 5.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/avaliacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"avaliacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir-Avaliacao",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/avaliacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"avaliacao"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Entregas",
+			"item": [
+				{
+					"name": "Cadastrar-Entrega",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"Desafio 1: Desenvolvimento da API de autenticação\",\r\n    \"nota\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/entrega",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"entrega"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar-Entregas-Por-Colaborador",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/entrega",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"entrega"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar-Entrega-Por-Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/entrega/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"entrega",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar-Entrega",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"Desafio 1: Desenvolvimento da API de autenticação\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/entrega/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"entrega",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir-Entrega",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36/entrega/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"colaborador",
+								"ce0a1014-e9c0-46ce-b056-9d81dacd1a36",
+								"entrega",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

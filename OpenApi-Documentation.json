@@ -1,0 +1,1031 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Case Itau - Open API",
+    "version": "1.0.0",
+    "description": "Esta API RESTful realiza o cadastro, atualização, consulta e exclusão de colaboradores de um banco de dados. Além disso, cada colaborador possuir suas respectivas entregas (com nota e descrição) e uma avalização comportamental com 4 notas distintas (comportamento, facilidade com aprendizado, tomada de decisão e autonomia). Nesta API, podem ser feitos os CRUDs tanto de entregas quanto da avaliação comportamental.\n\nPara mais informações sobre o sistema em que ela é utilizada, acesse:\n- [Repositório GitHub](https://github.com/swagger-api/swagger-petstore)"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "paths": {
+    "/api/v1/colaborador": {
+      "post": {
+        "tags": [
+          "Colaborador"
+        ],
+        "summary": "Cadastrar colaborador",
+        "description": "Cadastra um novo colaborador com nome, data de admissão e cargo.",
+        "requestBody": {
+          "description": "Exige o preenchimento do nome, data de admissão e cargo.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ColaboradorCadastroRequest"
+              },
+              "examples": {
+                "exemplo": {
+                  "value": {
+                    "nome": "Maria Silva",
+                    "dataAdmissao": "2023-01-15",
+                    "cargo": "Analista"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criado",
+            "headers": {
+              "Location": {
+                "description": "URI do recurso criado",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Colaborador"
+        ],
+        "summary": "Listar colaboradores",
+        "description": "Lista todos os colaboradores cadastrados no sistema.",
+        "responses": {
+          "200": {
+            "description": "Lista de colaboradores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ColaboradorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/colaborador/{matricula}": {
+      "get": {
+        "tags": [
+          "Colaborador"
+        ],
+        "summary": "Consultar colaborador por matrícula",
+        "description": "Consulta um colaborador a partir de sua matrícula.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColaboradorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Colaborador"
+        ],
+        "summary": "Deletar colaborador por matrícula",
+        "description": "Deleta um colaborador com base em sua matrícula.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo"
+          },
+          "404": {
+            "description": "Não encontrado"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Colaborador"
+        ],
+        "summary": "Atualizar colaborador por matrícula",
+        "description": "Atualiza as informações de um colaborador com base em sua matrícula.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ColaboradorAtualizaRequest"
+              },
+              "examples": {
+                "exemplo": {
+                  "value": {
+                    "nome": "Novo Nome",
+                    "dataAdmissao": "2024-02-01",
+                    "cargo": "Novo Cargo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não encontrado"
+          }
+        }
+      }
+    },
+    "/api/v1/colaborador/{matricula}/performance": {
+      "get": {
+        "tags": [
+          "Colaborador"
+        ],
+        "summary": "Calcular performance final do colaborador",
+        "description": "Calcula a performance final de um colaborador, somando as médias das notas das entregas e da avaliação comportamental.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColaboradorPerformanceResponse"
+                },
+                "examples": {
+                  "exemplo": {
+                    "value": {
+                      "matricula": "8a1e2b7e-5d4a-4b6c-9f0a-4a1b2c3d4e5f",
+                      "nome": "Maria Silva",
+                      "performance": {
+                        "mediaComportamental": 4.25,
+                        "mediaEntregas": 3.5,
+                        "notaFinal": 7.75
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Regra de negócio violada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não encontrado"
+          }
+        }
+      }
+    },
+    "/api/v1/colaborador/{matricula}/avaliacao": {
+      "post": {
+        "tags": [
+          "Avaliação Comportamental"
+        ],
+        "summary": "Cadastrar avaliação comportamental",
+        "description": "Cria a avaliação comportamental (4 notas) para o colaborador informado.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvaliacaoComportamentoCadastroRequest"
+              },
+              "examples": {
+                "exemplo": {
+                  "value": {
+                    "notaAvaliacaoComportamental": 4.5,
+                    "notaAprendizado": 4,
+                    "notaTomadaDecisao": 5,
+                    "notaAutonomia": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criado",
+            "headers": {
+              "Location": {
+                "description": "URI do recurso criado para a avaliação",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador não encontrado"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Avaliação Comportamental"
+        ],
+        "summary": "Consultar avaliação por matrícula",
+        "description": "Retorna as notas e a média calculada da avaliação comportamental do colaborador.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvaliacaoComportamentoResponse"
+                },
+                "examples": {
+                  "exemplo": {
+                    "value": {
+                      "notaAvaliacaoComportamental": 4.5,
+                      "notaAprendizado": 4,
+                      "notaTomadaDecisao": 5,
+                      "notaAutonomia": 4,
+                      "mediaNotas": 4.38
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador ou avaliação não encontrados"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Avaliação Comportamental"
+        ],
+        "summary": "Atualizar avaliação por matrícula",
+        "description": "Atualiza parcial ou totalmente as notas da avaliação comportamental do colaborador.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvaliacaoComportamentoAtualizaRequest"
+              },
+              "examples": {
+                "exemplo": {
+                  "value": {
+                    "notaAprendizado": 4.8,
+                    "notaAutonomia": 4.2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo"
+          },
+          "400": {
+            "description": "Regra de negócio ou validação violada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Avaliação Comportamental"
+        ],
+        "summary": "Deletar avaliação por matrícula",
+        "description": "Remove a avaliação comportamental do colaborador.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo"
+          },
+          "404": {
+            "description": "Colaborador não encontrado"
+          }
+        }
+      }
+    },
+    "/api/v1/colaborador/{matricula}/entrega": {
+      "post": {
+        "tags": [
+          "Entrega"
+        ],
+        "summary": "Cadastrar entrega para colaborador",
+        "description": "Cadastra uma nova entrega (descrição e nota) para o colaborador informado. Limite de 4 entregas por colaborador.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntregaCadastroRequest"
+              },
+              "examples": {
+                "exemplo": {
+                  "value": {
+                    "descricao": "Refatoração do módulo de pagamentos",
+                    "nota": 4.5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criado",
+            "headers": {
+              "Location": {
+                "description": "URI do recurso criado para a entrega",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntregaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Regra de negócio ou validação violada (ex. limite de 4 entregas)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador não encontrado"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Entrega"
+        ],
+        "summary": "Listar entregas do colaborador",
+        "description": "Retorna todas as entregas vinculadas ao colaborador informado.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EntregaResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador não encontrado"
+          }
+        }
+      }
+    },
+    "/api/v1/colaborador/{matricula}/entrega/{id}": {
+      "get": {
+        "tags": [
+          "Entrega"
+        ],
+        "summary": "Consultar entrega por ID",
+        "description": "Retorna a entrega pelo ID se ela pertencer ao colaborador informado.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntregaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Acesso negado (entrega não pertence ao colaborador)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador ou entrega não encontrados"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Entrega"
+        ],
+        "summary": "Atualizar entrega por ID",
+        "description": "Atualiza descrição e/ou nota da entrega se ela pertencer ao colaborador informado.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntregaAtualizaRequest"
+              },
+              "examples": {
+                "exemplo": {
+                  "value": {
+                    "descricao": "Ajustes finais e documentação",
+                    "nota": 4.8
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo"
+          },
+          "400": {
+            "description": "Regra de negócio ou validação violada / Acesso negado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador ou entrega não encontrados"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Entrega"
+        ],
+        "summary": "Deletar entrega por ID",
+        "description": "Remove a entrega se ela pertencer ao colaborador informado.",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo"
+          },
+          "400": {
+            "description": "Acesso negado (entrega não pertence ao colaborador)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador ou entrega não encontrados"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ColaboradorCadastroRequest": {
+        "type": "object",
+        "required": [
+          "nome",
+          "dataAdmissao",
+          "cargo"
+        ],
+        "properties": {
+          "nome": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Obrigatório"
+          },
+          "dataAdmissao": {
+            "type": "string",
+            "format": "date",
+            "description": "Não pode ser no futuro"
+          },
+          "cargo": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Obrigatório"
+          }
+        }
+      },
+      "ColaboradorAtualizaRequest": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dataAdmissao": {
+            "type": "string",
+            "format": "date",
+            "description": "Não pode ser no futuro"
+          },
+          "cargo": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "description": "Campos opcionais; somente os enviados serão atualizados."
+      },
+      "ColaboradorResponse": {
+        "type": "object",
+        "properties": {
+          "matricula": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "dataAdmissao": {
+            "type": "string",
+            "format": "date"
+          },
+          "cargo": {
+            "type": "string"
+          },
+          "avaliacaoComportamento": {
+            "$ref": "#/components/schemas/AvaliacaoComportamentoResponse"
+          },
+          "entregas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EntregaResponse"
+            }
+          }
+        },
+        "example": {
+          "matricula": "8a1e2b7e-5d4a-4b6c-9f0a-4a1b2c3d4e5f",
+          "nome": "Maria Silva",
+          "dataAdmissao": "2023-01-15",
+          "cargo": "Analista",
+          "avaliacaoComportamento": {
+            "notaAvaliacaoComportamental": 8,
+            "notaAprendizado": 9,
+            "notaTomadaDecisao": 7.5,
+            "notaAutonomia": 8.5,
+            "mediaNotas": 8.25
+          },
+          "entregas": [
+            {
+              "id": 1,
+              "descricao": "Entrega 1",
+              "nota": 8
+            },
+            {
+              "id": 2,
+              "descricao": "Entrega 2",
+              "nota": 9
+            }
+          ]
+        }
+      },
+      "AvaliacaoComportamentoCadastroRequest": {
+        "type": "object",
+        "required": [
+          "notaAvaliacaoComportamental",
+          "notaAprendizado",
+          "notaTomadaDecisao",
+          "notaAutonomia"
+        ],
+        "properties": {
+          "notaAvaliacaoComportamental": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "notaAprendizado": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "notaTomadaDecisao": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "notaAutonomia": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          }
+        }
+      },
+      "AvaliacaoComportamentoAtualizaRequest": {
+        "type": "object",
+        "properties": {
+          "notaAvaliacaoComportamental": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "notaAprendizado": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "notaTomadaDecisao": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "notaAutonomia": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          }
+        },
+        "description": "Campos opcionais; somente os enviados serão atualizados."
+      },
+      "AvaliacaoComportamentoResponse": {
+        "type": "object",
+        "properties": {
+          "notaAvaliacaoComportamental": {
+            "type": "number",
+            "format": "double"
+          },
+          "notaAprendizado": {
+            "type": "number",
+            "format": "double"
+          },
+          "notaTomadaDecisao": {
+            "type": "number",
+            "format": "double"
+          },
+          "notaAutonomia": {
+            "type": "number",
+            "format": "double"
+          },
+          "mediaNotas": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "EntregaCadastroRequest": {
+        "type": "object",
+        "required": [
+          "descricao",
+          "nota"
+        ],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nota": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          }
+        }
+      },
+      "EntregaAtualizaRequest": {
+        "type": "object",
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nota": {
+            "type": "number",
+            "format": "double",
+            "minimum": 1,
+            "maximum": 5
+          }
+        },
+        "description": "Campos opcionais; somente os enviados serão atualizados."
+      },
+      "EntregaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "nota": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ColaboradorPerformanceResponse": {
+        "type": "object",
+        "properties": {
+          "matricula": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "performance": {
+            "$ref": "#/components/schemas/ColaboradorMediaPerformanceResponse"
+          }
+        }
+      },
+      "ColaboradorMediaPerformanceResponse": {
+        "type": "object",
+        "properties": {
+          "mediaComportamental": {
+            "type": "number",
+            "format": "double"
+          },
+          "mediaEntregas": {
+            "type": "number",
+            "format": "double"
+          },
+          "notaFinal": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Colaborador",
+      "description": "Operações de colaboradores"
+    },
+    {
+      "name": "Avaliação Comportamental",
+      "description": "Operações de avaliação comportamental do colaborador"
+    },
+    {
+      "name": "Entrega",
+      "description": "Operações de entregas do colaborador"
+    }
+  ]
+}

@@ -53,7 +53,7 @@ public class EntregaResource {
         return ResponseEntity.ok(entregas);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Void> atualizarEntregaPorId(@PathVariable("matricula") String matricula,
                                                       @PathVariable("id") Long id,
                                                       @Valid @RequestBody EntregaAtualizaRequest entregaAtualizaRequest) {
