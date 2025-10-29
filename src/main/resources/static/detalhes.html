@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Colaborador</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Perfil do Colaborador</h1>
+    </div>
+</header>
+
+<main class="container">
+    <a href="index.html" class="btn-voltar">&larr; Voltar para a lista</a>
+
+    <div id="loading" class="loading">Carregando...</div>
+
+    <div id="colaborador-info" class="card card-info" style="display: none;">
+    </div>
+
+    <div class="detalhes-grid">
+        <div id="avaliacao-container" class="card" style="display: none;">
+            <h3>Avaliação Comportamental</h3>
+            <div id="avaliacao-detalhes"></div>
+        </div>
+
+        <div id="entregas-container" class="card" style="display: none;">
+            <h3>Entregas Realizadas</h3>
+            <div id="entregas-lista"></div>
+        </div>
+    </div>
+</main>
+
+<script src="detalhes.js"></script>
+</body>
+</html>

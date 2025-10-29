@@ -1,0 +1,222 @@
+:root {
+    --cor-primaria: #004a91; /* Azul corporativo */
+    --cor-fundo: #f4f7f6;
+    --cor-texto: #333;
+    --cor-card: #ffffff;
+    --cor-sombra: rgba(0, 0, 0, 0.08);
+    --cor-borda: #e0e0e0;
+    --cor-nota-boa: #28a745;
+    --cor-nota-media: #ffc107;
+    --cor-nota-ruim: #dc3545;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px var(--cor-sombra);
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--cor-borda);
+    padding-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--cor-primaria);
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 20px;
+}
+
+.card {
+    background-color: var(--cor-card);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--cor-sombra);
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-voltar {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--cor-primaria);
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.btn-voltar:hover {
+    transform: translateX(-5px);
+}
+
+.colaborador-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.colaborador-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--cor-texto);
+}
+
+.colaborador-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.colaborador-card h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    margin-bottom: 5px;
+}
+
+.colaborador-card .cargo {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.colaborador-card .ver-detalhes {
+    font-weight: 600;
+    color: var(--cor-primaria);
+    align-self: flex-start;
+}
+
+.card-info {
+    background-color: var(--cor-card);
+    margin-bottom: 30px;
+}
+
+.card-info h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    border: none;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+.card-info p {
+    font-size: 1.1rem;
+    color: #444;
+}
+
+.detalhes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+#avaliacao-detalhes ul {
+    list-style: none;
+    padding: 0;
+}
+
+#avaliacao-detalhes li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+#avaliacao-detalhes li:last-child {
+    border-bottom: none;
+}
+
+#avaliacao-detalhes .label {
+    font-weight: 500;
+}
+
+#avaliacao-detalhes .nota-valor {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+#entregas-lista .entrega-item {
+    padding: 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#entregas-lista .entrega-item p {
+    margin: 0;
+    font-weight: 500;
+    flex-grow: 1;
+}
+
+#entregas-lista .nota-valor {
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 5px;
+    color: white;
+    margin-left: 15px;
+}
+
+.media-final {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    background-color: #e6f0f8;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .detalhes-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
