@@ -142,7 +142,6 @@ Para consultar um colaborador específico, utilize a `matricula` (UUID) fornecid
     GET http://localhost:8080/api/v1/colaborador/ce0a1014-e9c0-46ce-b056-9d81dacd1a36
     ```
 
-    *Fonte: `api-files/API-Collection.json`*
 
   * **Resposta (Sucesso):** `200 OK`
 
