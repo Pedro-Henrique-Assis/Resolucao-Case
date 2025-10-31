@@ -32,6 +32,10 @@ public class EntregaService {
         this.entregaRepository = entregaRepository;
     }
 
+    // Método que cadastra uma nova entrega para um colaborador
+    // Objetivo: cadastrar a entrega, validando o limite de 4 entregas por colaborador
+    // Parâmetros: matrícula (String) do colaborador e DTO (EntregaCadastroRequest) com descrição e nota
+    // Resposta: A entidade (EntregaEntity) da entrega que foi salva no banco
     @Transactional
     public EntregaEntity cadastrarEntregaColaborador(String matricula, EntregaCadastroRequest entregaCadastroRequest) {
         var matriculaUUID = UUID.fromString(matricula);
@@ -57,6 +61,10 @@ public class EntregaService {
         return entregaRepository.save(entrega);
     }
 
+    // Método que consulta uma entrega específica pelo seu ID
+    // Objetivo: consultar uma entrega e validar se ela pertence ao colaborador informado
+    // Parâmetros: matrícula (String) do colaborador e id (Long) da entrega
+    // Resposta: DTO (EntregaResponse) com os dados da entrega encontrada
     @Transactional(readOnly = true)
     public EntregaResponse consultarEntregaPorId(String matricula, Long id) {
         var matriculaUUID = UUID.fromString(matricula);
@@ -88,6 +96,10 @@ public class EntregaService {
         return entregaDTO;
     }
 
+    // Método que lista todas as entregas de um colaborador específico
+    // Objetivo: listar todas as entregas vinculadas a uma matrícula
+    // Parâmetros: matrícula (String) do colaborador
+    // Resposta: Lista de DTOs (List<EntregaResponse>) com as entregas
     @Transactional(readOnly = true)
     public List<EntregaResponse> listarEntregasPorColaborador(String matricula) {
         var matriculaUUID = UUID.fromString(matricula);
@@ -111,6 +123,10 @@ public class EntregaService {
                 .collect(Collectors.toList());
     }
 
+    // Método que exclui uma entrega específica
+    // Objetivo: excluir uma entrega, validando se ela pertence ao colaborador informado
+    // Parâmetros: matrícula (String) do colaborador e id (Long) da entrega a ser excluída
+    // Resposta: void (apenas remove a entrega do banco de dados)
     @Transactional
     public void deletarEntregaColaborador(String matricula, Long id) {
         var matriculaUUID = UUID.fromString(matricula);
@@ -138,6 +154,10 @@ public class EntregaService {
         logger.info("Entrega deletada com sucesso.");
     }
 
+    // Método que atualiza uma entrega (parcial ou total)
+    // Objetivo: atualizar descrição e/ou nota de uma entrega, validando a posse
+    // Parâmetros: matrícula (String), id (Long) da entrega e DTO (EntregaAtualizaRequest) com os dados
+    // Resposta: void (apenas salva as alterações no banco de dados)
     @Transactional
     public void atualizarEntregaPorId(String matricula, Long id, EntregaAtualizaRequest entregaAtualizaRequest) {
         var matriculaUUID = UUID.fromString(matricula);

@@ -35,6 +35,10 @@ public class AvaliacaoComportamentoService {
         this.colaboradorRepository = colaboradorRepository;
     }
 
+    // Método que cadastra uma avaliação comportamental para um colaborador
+    // Objetivo: cadastrar a avaliação comportamental
+    // Parâmetros: matrícula do colaborador (String) e o record AvaliacaoComportamentoCadastroRequest com as 4 notas
+    // Resposta: ID (Long) da avaliação comportamental cadastrada
     @Transactional
     public Long cadastrarAvaliacaoComportamental(
             String matricula,
@@ -61,6 +65,10 @@ public class AvaliacaoComportamentoService {
         return avaliacaoComportamentoSalva.getId();
     }
 
+    // Método que consulta a avaliação comportamental de um colaborador específico
+    // Objetivo: consultar a avaliação e calcular a média das notas
+    // Parâmetros: matrícula (String) do colaborador
+    // Resposta: DTO (AvaliacaoComportamentoResponse) com as 4 notas e a média calculada
     @Transactional(readOnly = true)
     public AvaliacaoComportamentoResponse consultaAvaliacaoPorMatricula(String matricula) {
         logger.debug("Iniciando consulta de avaliação para a matrícula '{}'", matricula);
@@ -86,6 +94,10 @@ public class AvaliacaoComportamentoService {
         return respostaDTO;
     }
 
+    // Método que atualiza as notas da avaliação comportamental (parcial ou total)
+    // Objetivo: atualizar as notas da avaliação
+    // Parâmetros: matrícula (String) do colaborador e DTO (AvaliacaoComportamentoAtualizaRequest) com as notas a serem alteradas
+    // Resposta: void (apenas salva as alterações no banco de dados)
     @Transactional
     public void atualizaAvaliacaoPorMarticula(
             String matricula,
@@ -133,6 +145,10 @@ public class AvaliacaoComportamentoService {
 
     }
 
+    // Método que exclui a avaliação comportamental de um colaborador
+    // Objetivo: excluir a avaliação vinculada à matrícula
+    // Parâmetros: matrícula (String) do colaborador
+    // Resposta: void (apenas remove a avaliação do banco de dados)
     @Transactional
     public void deletarAvaliacoesPorMatricula(String matricula) {
         var matriculaUUID = UUID.fromString(matricula);
@@ -156,6 +172,10 @@ public class AvaliacaoComportamentoService {
         }
     }
 
+    // Método que formata o DTO de resposta da avaliação comportamental
+    // Objetivo: calcular a média das 4 notas e retornar o DTO formatado
+    // Parâmetros: objeto (AvaliacaoComportamentoEntity) com as notas vindas do banco
+    // Retorno: objeto (AvaliacaoComportamentoResponse) com as 4 notas e a média
     private AvaliacaoComportamentoResponse formataRespostaDTO(AvaliacaoComportamentoEntity avaliacao) {
 
         logger.debug("Iniciando formatação do JSON de resposta da avaliacao id={}", avaliacao.getId());

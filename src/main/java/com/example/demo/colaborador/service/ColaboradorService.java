@@ -33,6 +33,10 @@ public class ColaboradorService {
         this.colaboradorRepository = colaboradorRepository;
     }
 
+    // Método que cadastra um colaborador no banco de dados
+    // Objetivo: cadastrar um colaborador
+    // Parâmetros: record do tipo ColaboradorCadastroRequest com os dados do colaborador a ser cadastrado
+    // Resposta: matrícula do colaborador cadastrado do tipo UUID
     @Transactional
     public UUID cadastrarColaborador(ColaboradorCadastroRequest colaboradorCadastroRequest) {
 
@@ -47,18 +51,35 @@ public class ColaboradorService {
         return colaboradorSalvo.getMatricula();
     }
 
+    // Método que consulta um colaborador específico no banco de dados
+    // Objetivo: consultar um colaborador e, se encontrar, retorna um DTO de resposta
+    // Parâmetros: matrícula do colaborador a ser consultado
+    // Resposta: Optional<ColaboradorResponse> com o Json do colaborador encontrado ou um Optional vazio
     @Transactional(readOnly = true)
     public Optional<ColaboradorResponse> consultarColaboradorPorMatricula(String matricula) {
         return colaboradorRepository
-                .findById(UUID.fromString(matricula))
-                .map(this::formatarJsonDTO);
+                .findById(UUID.fromString(matricula)) // Retorna um Optional<ColaboradorEntity> pois pode ser que o colaborador não exista
+                .map(this::formatarJsonDTO); // Obtém o ColaboradorEntity dentro do Optional e transforma em um ColaboradorResponse a partir do método formatarJsonDTO
+                // O map retorna um Optional se o colaborador não existir
     }
 
+    // Método que lista todos os colaboradores cadastrados no banco de dados
+    // Objetivo: listar colaboradores
+    // Parâmetros: nenhum (somente listagem)
+    // Resposta: List<ColaboradorResponse> lista de colaboradores formatada a ser retornada via JSON.
     @Transactional(readOnly = true)
     public List<ColaboradorResponse> listarColaboradores() {
-        return colaboradorRepository.findAll().stream().map(this::formatarJsonDTO).collect(Collectors.toList());
+        return colaboradorRepository.findAll() // Retorna uma lista de objetos do tipo ColaboradorEntity
+                .stream() // Converte a List<ColaboradorEntity> em um Stream<ColaboradorEntity>
+                // Stream -> Sequência de elementos que permite realizar operações complexas de forma declarativa
+                .map(this::formatarJsonDTO) // Aplica o método formatarJsonDTO para cada linha do stream, retornando uma lista de ColaboradorResponse
+                .collect(Collectors.toList()); // Pega todos os itens do stream e os agrupa em uma List<ColaboradorResponse>
     }
 
+    // Método que exclui um colaborador do banco de dados
+    // Objetivo: excluir um colaborador
+    // Parâmetros: matrícula do colaborador a ser excluído
+    // Resposta: void (somente exclui o colaborador do banco de dados utilizando a interface repository).
     @Transactional
     public void deletarColaboradorPorMatricula(String matricula) {
         var matriculaUUID = UUID.fromString(matricula);
@@ -71,6 +92,11 @@ public class ColaboradorService {
         logger.info("Colaborador deletado com sucesso");
     }
 
+    // Método que atualiza as informações dos colaboradores parcial ou totalmente, realizando validações (PATCH)
+    // Objetivo: atualizar as informações do colaborador
+    // Parâmetros: matrícula do colaborador a ser atualizado e record do tipo ColaboradorAtualizaRequest com as
+    // informações a serem atualizadas
+    // Resposta: void (somente atualiza as informações no banco de dados utilizando a interface repository).
     @Transactional
     public void atualizaColaboradorPorMatricula(String matricula, ColaboradorAtualizaRequest colaboradorAtualizaRequest) {
         var matriculaUUID = UUID.fromString(matricula);
@@ -102,6 +128,11 @@ public class ColaboradorService {
         logger.info("Atualização do colaborador finalizada com sucesso");
     }
 
+    // Método que calcula a performance final do colaborador (média de notas de entregas + média da avaliação comportamental)
+    // Objetivo: calcular a performance e retornar um DTO de resposta para o usuários com as médias e a peformance final
+    // Parâmetros: matrícula do colaborador que terá a performance calculada
+    // Retorno: objeto do tipo ColaboradorPerformanceResponde utilizado pela ResponseEntity na classe ColaboradorResponse
+    @Transactional(readOnly = true)
     public ColaboradorPerformanceResponse calcularPerformanceFinal(String matricula) {
         var matriculaUUID = UUID.fromString(matricula);
 
@@ -171,8 +202,8 @@ public class ColaboradorService {
     // Método que formata o JSON de resposta gerado pela consulta de colaboradores
     // Objetivo: não gerar um loop infinito de informações aninhadas ao retornar as avaliações e entregas
     // + tornar o JSON mais agradável e legível
-    // Parametros: objeto do tipo Colaborador cadastrado no banco de dados
-    // Retorno: objeto do tipo ColaboradorRespostaDTO utilizado pela ResponseEntity na classe ColaboradorController
+    // Parâmetros: objeto do tipo Colaborador cadastrado no banco de dados
+    // Retorno: objeto do tipo ColaboradorResponse utilizado pela ResponseEntity na classe ColaboradorResource
     private ColaboradorResponse formatarJsonDTO(ColaboradorEntity colaboradorEntity) {
         logger.debug("Iniciando a montagem do JSON de resposta para a Controller");
 
