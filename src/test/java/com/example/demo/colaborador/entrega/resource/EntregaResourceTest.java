@@ -177,7 +177,7 @@ class EntregaResourceTest {
             // Act
             // Executa PUT /api/v1/colaborador/{matricula}/entrega/{id}
             mockMvc.perform(
-                            put("/api/v1/colaborador/{matricula}/entrega/{id}", matricula, id)
+                            patch("/api/v1/colaborador/{matricula}/entrega/{id}", matricula, id)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(dto))
                     )

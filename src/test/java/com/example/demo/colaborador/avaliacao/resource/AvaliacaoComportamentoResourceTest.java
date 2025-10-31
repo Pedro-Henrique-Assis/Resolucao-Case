@@ -160,7 +160,7 @@ class AvaliacaoComportamentoResourceTest {
             // Act
             // Executa PUT /api/v1/colaborador/{matricula}/avaliacao
             mockMvc.perform(
-                            put("/api/v1/colaborador/{matricula}/avaliacao", matricula)
+                            patch("/api/v1/colaborador/{matricula}/avaliacao", matricula)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(dto))
                     )
