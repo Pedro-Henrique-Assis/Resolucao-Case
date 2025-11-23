@@ -3,38 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Colaborador</title>
+    <title>Detalhes do Colaborador - MAGITECH</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <h1>Perfil do Colaborador</h1>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">MAGITECH</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="cadastro.html">Cadastro</a></li>
+        </ul>
     </div>
-</header>
+</nav>
 
-<main class="container">
-    <a href="index.html" class="btn-voltar">&larr; Voltar para a lista</a>
+<main class="main-content">
+    <a href="dashboard.html" class="btn-voltar">&larr; Voltar para o Dashboard</a>
 
-    <div id="loading" class="loading">Carregando...</div>
+    <div id="loading" class="loading">Carregando detalhes...</div>
 
-    <div id="colaborador-info" class="card card-info" style="display: none;">
+    <div id="colaborador-info" class="card card-profile-header" style="display: none;">
     </div>
 
     <div class="detalhes-grid">
         <div id="avaliacao-container" class="card" style="display: none;">
-            <h3>Avaliação Comportamental</h3>
             <div id="avaliacao-detalhes"></div>
         </div>
 
         <div id="entregas-container" class="card" style="display: none;">
-            <h3>Entregas Realizadas</h3>
             <div id="entregas-lista"></div>
         </div>
     </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="detalhes.js"></script>
 </body>
 </html>

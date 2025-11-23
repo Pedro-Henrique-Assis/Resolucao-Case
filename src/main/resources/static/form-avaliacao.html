@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Comportamental - MAGITECH</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">MAGITECH</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="cadastro.html" class="active">Cadastro</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content">
+    <a href="cadastro.html" class="btn-voltar">&larr; Voltar para opções</a>
+
+    <div class="form-container">
+        <h2 class="section-title" style="text-align: center; border: none;">Avaliação Comportamental</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 20px;">Atribua notas de 1.0 a 5.0 para cada critério.</p>
+
+        <form id="form-avaliacao">
+            <div class="form-group">
+                <label for="matricula">Matrícula do Colaborador (UUID)</label>
+                <input type="text" id="matricula" class="form-control" placeholder="Cole o ID do colaborador aqui" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notaComportamental">Comportamento</label>
+                <input type="number" id="notaComportamental" class="form-control" min="1" max="5" step="0.1" placeholder="1.0 a 5.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notaAprendizado">Facilidade de Aprendizado</label>
+                <input type="number" id="notaAprendizado" class="form-control" min="1" max="5" step="0.1" placeholder="1.0 a 5.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notaDecisao">Tomada de Decisão</label>
+                <input type="number" id="notaDecisao" class="form-control" min="1" max="5" step="0.1" placeholder="1.0 a 5.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notaAutonomia">Autonomia</label>
+                <input type="number" id="notaAutonomia" class="form-control" min="1" max="5" step="0.1" placeholder="1.0 a 5.0" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Salvar Avaliação</button>
+            <div id="feedback" class="feedback-message"></div>
+        </form>
+    </div>
+</main>
+
+<script src="forms.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Colaborador - MAGITECH</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">MAGITECH</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="cadastro.html" class="active">Cadastro</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content">
+    <a href="cadastro.html" class="btn-voltar">&larr; Voltar para opções</a>
+
+    <div class="form-container">
+        <h2 class="section-title" style="text-align: center; border: none;">Novo Colaborador</h2>
+
+        <form id="form-colaborador">
+            <div class="form-group">
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" class="form-control" placeholder="Ex: Maria Silva" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" class="form-control" placeholder="Ex: Desenvolvedor Senior" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dataAdmissao">Data de Admissão</label>
+                <input type="date" id="dataAdmissao" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Cadastrar Colaborador</button>
+
+            <div id="feedback" class="feedback-message"></div>
+        </form>
+    </div>
+</main>
+
+<script src="forms.js"></script>
+</body>
+</html>

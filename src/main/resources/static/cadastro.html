@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAGITECH - Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">MAGITECH</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="cadastro.html" class="active">Cadastro</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content">
+    <h2 class="section-title">O que você deseja cadastrar?</h2>
+
+    <div class="cadastro-options">
+
+        <a href="javascript:void(0)" class="option-card" onclick="redirecionar('form-colaborador.html', 'Novo Colaborador')">
+            <span class="option-icon">&#128100;</span>
+            <h3>Novo Colaborador</h3>
+            <p>Registre um novo talento no sistema, informando cargo e data de admissão.</p>
+        </a>
+
+        <a href="javascript:void(0)" class="option-card" onclick="redirecionar('form-avaliacao.html', 'Avaliação Comportamental')">
+            <span class="option-icon">&#128202;</span>
+            <h3>Avaliação Comportamental</h3>
+            <p>Lance as notas de soft-skills: Aprendizado, Autonomia, Decisão e Comportamento.</p>
+        </a>
+
+        <a href="javascript:void(0)" class="option-card" onclick="redirecionar('form-entrega.html', 'Nova Entrega')">
+            <span class="option-icon">&#128230;</span>
+            <h3>Nova Entrega</h3>
+            <p>Registre uma entrega técnica realizada por um colaborador e atribua uma nota.</p>
+        </a>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    /**
+     * Função para exibir o SweetAlert e redirecionar
+     * @param {string} url - O endereço da página de destino (ex: 'form-colaborador.html')
+     * @param {string} funcionalidade - O nome da funcionalidade para exibir no texto
+     */
+    function redirecionar(url, funcionalidade) {
+        Swal.fire({
+            title: 'Aguarde...',
+            text: `Preparando o formulário de ${funcionalidade}`,
+            icon: 'info',
+            timer: 1500, // Tempo em milissegundos (1.5 segundos)
+            timerProgressBar: true,
+            showConfirmButton: false, // Remove o botão "OK" para ser automático
+            background: '#fff',
+            color: '#333',
+            willClose: () => {
+                // Executa o redirecionamento quando o alerta fechar
+                window.location.href = url;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
